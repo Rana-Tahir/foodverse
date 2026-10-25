@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Star, MapPin, Phone, Clock } from 'lucide-react';
+import { ArrowLeft, Star, MapPin, Phone } from 'lucide-react';
 import { getRestaurantById } from '@/features/restaurants/search-restaurants';
 import { getRestaurantMenu, MenuItem } from '@/features/restaurants/get-menu';
+import { AddToCartButton } from '@/components/menu/add-to-cart-button';
+import { CartDrawer } from '@/components/cart/cart-drawer';
 
 interface RestaurantDetailPageProps {
   params: {
@@ -151,15 +153,11 @@ export default async function RestaurantDetailPage({ params }: RestaurantDetailP
                           )}
                         </div>
                         <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-                          {item.is_available ? (
-                            <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 rounded-lg text-xs transition shadow-sm">
-                              Add to Cart
-                            </button>
-                          ) : (
-                            <span className="w-full text-center bg-gray-200 text-gray-600 font-semibold py-2 rounded-lg text-xs cursor-not-allowed">
-                              Sold Out
-                            </span>
-                          )}
+                          <AddToCartButton
+                            restaurantId={restaurant.id}
+                            restaurantName={restaurant.name}
+                            item={item}
+                          />
                         </div>
                       </div>
                     ))}
@@ -170,6 +168,9 @@ export default async function RestaurantDetailPage({ params }: RestaurantDetailP
           </div>
         </div>
       </main>
+
+      {/* Floating Cart Drawer */}
+      <CartDrawer />
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 py-8 text-center text-sm text-gray-500">
